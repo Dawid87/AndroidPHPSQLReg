@@ -30,4 +30,8 @@ public class MainActivity extends AppCompatActivity {
         startActivity(new Intent(this, Register.class));
     }
 
+    public void OnGet(View v){
+        startActivity(new Intent(this, UserAccount.class));
+    }
+
 }

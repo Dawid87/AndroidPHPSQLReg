@@ -20,7 +20,7 @@
         </activity>
         <activity android:name=".Register" />
         <activity android:name=".ReadingFromDB" />
-        <activity android:name=".UserAccount"></activity>
+        <activity android:name=".UserAccount" />
     </application>
 
 </manifest>

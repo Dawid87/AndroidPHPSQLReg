@@ -34,7 +34,7 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
         String login_url = "http://192.168.0.64/conn/login.php";
         String register_url = "http://192.168.0.64/conn/register.php";
         String get_url = "http://192.168.0.64/conn/get.php";
-        String send_url = "http://192.168.0.64/conn/send.php";
+        String parts_url = "http://192.168.0.64/conn/parts.php";
         if(type.equals("login")) {
             try {
                 String user_name = params[1];
@@ -107,15 +107,46 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }  else if(type.equals("send")){
+        }  else if(type.equals("parts")){
             try {
                 String name = params[1];
                 String quantity = params[2];
-//                String age = params[3];
-//                String username = params[4];
-                URL url = new URL(send_url);
+                URL url = new URL(parts_url);
                 HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
                 httpURLConnection.setRequestMethod("POST");
+                httpURLConnection.setDoOutput(true);
+                httpURLConnection.setDoInput(true);
+                OutputStream outputStream = httpURLConnection.getOutputStream();
+                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+                String post_data = URLEncoder.encode("name","UTF-8")+"="+URLEncoder.encode(name,"UTF-8")+"&"
+                        +URLEncoder.encode("quantity","UTF-8")+"="+URLEncoder.encode(quantity,"UTF-8");
+                bufferedWriter.write(post_data);
+                bufferedWriter.flush();
+                bufferedWriter.close();
+                outputStream.close();
+                InputStream inputStream = httpURLConnection.getInputStream();
+                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream,"iso-8859-1"));
+                String result = "";
+                String line;
+                while((line = bufferedReader.readLine())!= null) {
+                    result += line;
+                }
+                bufferedReader.close();
+                inputStream.close();
+                httpURLConnection.disconnect();
+                return result;
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else if(type.equals("get")){
+            try {
+                String name = params[1];
+                String quantity = params[2];
+                URL url = new URL(get_url);
+                HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
+                httpURLConnection.setRequestMethod("GET");
                 httpURLConnection.setDoOutput(true);
                 httpURLConnection.setDoInput(true);
                 OutputStream outputStream = httpURLConnection.getOutputStream();
@@ -154,6 +185,8 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
 
     @Override
     protected void onPostExecute(String result) {
+//        alertDialog.setMessage(result);
+//        alertDialog.show();
         if(result.contains("Registration succeed. Welcome")){
             Intent j = new Intent(context, MainActivity.class);
             context.startActivity(j);
@@ -172,6 +205,11 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
         else if(result.contains("Added to parts database")){
             alertDialog.setMessage(result);
             alertDialog.show();
+        }
+        else if (result.contains(" - Name:")){
+            alertDialog.setMessage(result);
+            alertDialog.show();
+            Toast.makeText(context, result, Toast.LENGTH_SHORT).show();
         }
         }
 

@@ -6,6 +6,9 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -17,6 +20,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by dawiddelimata on 14.01.2018.
@@ -140,40 +145,41 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        } else if(type.equals("get")){
-            try {
-                String name = params[1];
-                String quantity = params[2];
-                URL url = new URL(get_url);
-                HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
-                httpURLConnection.setRequestMethod("GET");
-                httpURLConnection.setDoOutput(true);
-                httpURLConnection.setDoInput(true);
-                OutputStream outputStream = httpURLConnection.getOutputStream();
-                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
-                String post_data = URLEncoder.encode("name","UTF-8")+"="+URLEncoder.encode(name,"UTF-8")+"&"
-                        +URLEncoder.encode("quantity","UTF-8")+"="+URLEncoder.encode(quantity,"UTF-8");
-                bufferedWriter.write(post_data);
-                bufferedWriter.flush();
-                bufferedWriter.close();
-                outputStream.close();
-                InputStream inputStream = httpURLConnection.getInputStream();
-                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream,"iso-8859-1"));
-                String result = "";
-                String line;
-                while((line = bufferedReader.readLine())!= null) {
-                    result += line;
-                }
-                bufferedReader.close();
-                inputStream.close();
-                httpURLConnection.disconnect();
-                return result;
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+       } //else if(type.equals("get")){
+//            try {
+//                String name = params[1];
+//                String quantity = params[2];
+//                URL url = new URL(get_url);
+//                HttpURLConnection httpURLConnection = (HttpURLConnection)url.openConnection();
+//                httpURLConnection.setRequestMethod("GET");
+//                httpURLConnection.setDoOutput(true);
+//                httpURLConnection.setDoInput(true);
+//                OutputStream outputStream = httpURLConnection.getOutputStream();
+//                BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(outputStream, "UTF-8"));
+//                String post_data = URLEncoder.encode("name","UTF-8")+"="+URLEncoder.encode(name,"UTF-8")+"&"
+//                        +URLEncoder.encode("quantity","UTF-8")+"="+URLEncoder.encode(quantity,"UTF-8");
+//                bufferedWriter.write(post_data);
+//                bufferedWriter.flush();
+//                bufferedWriter.close();
+//                outputStream.close();
+//                InputStream inputStream = httpURLConnection.getInputStream();
+//                BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream,"iso-8859-1"));
+//                String result = "";
+//                String line;
+//                while((line = bufferedReader.readLine())!= null) {
+//                    result += line;
+//                }
+//                bufferedReader.close();
+//                inputStream.close();
+//                httpURLConnection.disconnect();
+//                return result;
+//
+//            } catch (MalformedURLException e) {
+//                e.printStackTrace();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//        }
         return null;
     }
 
@@ -206,12 +212,13 @@ public class BackgroundWorker extends AsyncTask<String,Void,String> {
             alertDialog.setMessage(result);
             alertDialog.show();
         }
-        else if (result.contains(" - Name:")){
-            alertDialog.setMessage(result);
-            alertDialog.show();
-            Toast.makeText(context, result, Toast.LENGTH_SHORT).show();
+//        else if (result.contains(" - Name:")){
+//            alertDialog.setMessage(result);
+//            alertDialog.show();
+//            Toast.makeText(context, result, Toast.LENGTH_SHORT).show();
+//        }
         }
-        }
+
 
 
     @Override

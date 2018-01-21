@@ -27,6 +27,6 @@ public class UserAccount extends AppCompatActivity {
     }
 
     public void OnGet(View v){
-        startActivity(new Intent(this, ReadingFromDB.class));
+        startActivity(new Intent(this, FromDB.class));
     }
 }
